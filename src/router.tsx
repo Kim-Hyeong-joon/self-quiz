@@ -4,6 +4,7 @@ import Home from "./routes/Home";
 import NotFound from "./routes/NotFound";
 import Reminder from "./routes/Reminder";
 import Quiz from "./routes/Quiz";
+import UploadQuiz from "./routes/UploadQuiz";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "quizs/quiz",
         element: <Quiz />,
+      },
+      {
+        path: "quizs/upload",
+        element: <UploadQuiz />,
       },
     ],
   },

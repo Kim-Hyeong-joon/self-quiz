@@ -17,6 +17,8 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useSetRecoilState } from "recoil";
+import { showNavBarState } from "../components/Root";
 
 interface IQuiz {
   question: string;
@@ -72,6 +74,7 @@ const cardVariants = {
 };
 
 export default function Quiz() {
+  const setShowNavBar = useSetRecoilState(showNavBarState);
   const [submit, setSubmit] = useState(false);
   const [time, setTime] = useState(20);
   const [timeInterval, setTimeInterval] = useState<NodeJS.Timeout>();
@@ -102,6 +105,7 @@ export default function Quiz() {
       setTime(() => quizs[visible + 1].time);
     }
   };
+  useEffect(() => setShowNavBar(() => false));
   return (
     <Container mt="5">
       <HStack
@@ -115,7 +119,11 @@ export default function Quiz() {
             index === visible ? (
               <motion.div
                 key={index}
-                style={{ height: "100%", width: "100%", position: "absolute" }}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  position: "absolute",
+                }}
                 transition={{ duration: 0.5 }}
                 variants={cardVariants}
                 initial="invisible"
@@ -162,7 +170,7 @@ export default function Quiz() {
                             <Text textAlign={"center"}>해설</Text>
                             <Text>{quiz.commentary}</Text>
                           </Box>
-                          <HStack w="100%">
+                          <HStack w="100%" my="5">
                             <Button
                               variant={"solid"}
                               colorScheme="green"
@@ -180,6 +188,7 @@ export default function Quiz() {
                     </VStack>
                   </CardFooter>
                 </Card>
+                <Box h="60px"></Box>
               </motion.div>
             ) : null
           )}
