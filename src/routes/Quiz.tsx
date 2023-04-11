@@ -15,13 +15,15 @@ import {
 } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaRegClock } from "react-icons/fa";
+import { FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 interface IQuiz {
   question: string;
   answer: string;
   commentary: string;
+  time: number;
+  bookmark: boolean;
 }
 
 const quizs: IQuiz[] = [
@@ -30,24 +32,30 @@ const quizs: IQuiz[] = [
     answer: "Okay. Here we go! You got this. Elsa.",
     commentary:
       "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
+    time: 20,
+    bookmark: true,
   },
   {
     question: "안나: 좋아, 가보자고!!!!",
     answer: "Okay. Here we go! You got this. Elsa.",
     commentary:
       "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
+    time: 40,
+    bookmark: false,
   },
   {
     question: "안나: 좋아, 가보자고! 잘할 수 있어!!!!!!!",
     answer: "Okay. Here we go! You got this. Elsa.",
     commentary:
       "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
+    time: 60,
+    bookmark: false,
   },
 ];
 
 const cardVariants = {
   invisible: {
-    x: 500,
+    x: -500,
     opacity: 0,
     scale: 0,
   },
@@ -57,7 +65,7 @@ const cardVariants = {
     scale: 1,
   },
   exit: {
-    x: -500,
+    x: 500,
     opacity: 0,
     scale: 0,
   },
@@ -75,7 +83,7 @@ export default function Quiz() {
     setTimeInterval(() =>
       setInterval(() => setTime((current) => current - 1), 1000)
     );
-  }, []);
+  }, [visible]);
   useEffect(() => {
     if (submit) {
       clearInterval(timeInterval);
@@ -87,16 +95,18 @@ export default function Quiz() {
       clearInterval(timeInterval);
     }
   }, [time]);
-  const nextPlease = () => {
+  const nextPlease = (quizTime: number) => {
     setVisible((prev) => (prev === quizs.length - 1 ? quizs.length : prev + 1));
-
     setSubmit(() => false);
+    if (visible < quizs.length) {
+      setTime(() => quizs[visible + 1].time);
+    }
   };
   return (
     <Container mt="5">
       <HStack
         justifyContent={"center"}
-        alignItems={"center"}
+        alignItems={"flex-start"}
         w="100%"
         position={"relative"}
       >
@@ -114,9 +124,16 @@ export default function Quiz() {
               >
                 <Card>
                   <CardBody>
-                    <HStack>
-                      <FaRegClock />
-                      <Text>{time}</Text>
+                    <HStack justifyContent={"space-between"}>
+                      <HStack>
+                        <FaRegClock />
+                        <Text>{time}</Text>
+                      </HStack>
+                      {quiz.bookmark ? (
+                        <FaHeart fontSize={"20"} />
+                      ) : (
+                        <FaRegHeart fontSize={"20"} />
+                      )}
                     </HStack>
                     <Stack divider={<StackDivider />}>
                       <Box>
@@ -150,7 +167,7 @@ export default function Quiz() {
                               variant={"solid"}
                               colorScheme="green"
                               w="100%"
-                              onClick={nextPlease}
+                              onClick={() => nextPlease(quiz.time)}
                             >
                               정답!
                             </Button>

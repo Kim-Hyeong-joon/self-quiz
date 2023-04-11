@@ -1,5 +1,6 @@
 import { Box, Grid, HStack, Heading, Text } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -11,7 +12,11 @@ export default function Header() {
       alignItems={"center"}
     >
       <Box justifySelf={"start"} />
-      <Text justifySelf={"center"}>Self Quiz</Text>
+      <Box justifySelf={"center"}>
+        <Link to="/">
+          <Text>Self Quiz</Text>
+        </Link>
+      </Box>
       <ColorModeSwitcher justifySelf={"end"} />
     </Grid>
   );

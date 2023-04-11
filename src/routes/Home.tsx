@@ -13,6 +13,7 @@ import {
   Checkbox,
   SimpleGrid,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -20,7 +21,9 @@ export default function Home() {
       <Container maxW="container.sm">
         <HStack mb="5" mx="5" justifyContent={"space-between"}>
           <Text fontSize={"2xl"}>오늘의 퀴즈!</Text>
-          <Text fontSize={"md"}>전체 풀기&rarr;</Text>
+          <Link to="/quizs/quiz">
+            <Text fontSize={"md"}>전체 풀기&rarr;</Text>
+          </Link>
         </HStack>
         <SimpleGrid
           w="100%"
