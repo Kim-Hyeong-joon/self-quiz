@@ -21,7 +21,7 @@ const router = createBrowserRouter([
         element: <Reminder />,
       },
       {
-        path: "quizs/quiz",
+        path: "quizs/:quizId/quiz",
         element: <Quiz />,
       },
       {

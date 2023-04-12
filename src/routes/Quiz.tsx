@@ -19,42 +19,17 @@ import { FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 import { showNavBarState } from "../components/Root";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getQuiz } from "../api";
 
 interface IQuiz {
+  id: number;
   question: string;
   answer: string;
   commentary: string;
   time: number;
-  bookmark: boolean;
 }
-
-const quizs: IQuiz[] = [
-  {
-    question: "안나: 좋아, 가보자고! 잘할 수 있어. 엘사.",
-    answer: "Okay. Here we go! You got this. Elsa.",
-    commentary:
-      "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
-    time: 20,
-    bookmark: true,
-  },
-  {
-    question: "안나: 좋아, 가보자고!!!!",
-    answer: "Okay. Here we go! You got this. Elsa.",
-    commentary:
-      "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
-    time: 40,
-    bookmark: false,
-  },
-  {
-    question: "안나: 좋아, 가보자고! 잘할 수 있어!!!!!!!",
-    answer: "Okay. Here we go! You got this. Elsa.",
-    commentary:
-      "Here we go!는 뭔가 흥분되거나 위험한 일을 시작할 때 외치는 말이에요. You got this.는 (이 일은 네게 어렵지 않으니/너는 준비되었으니) '잘할 수 있다'는 뜻으로 쓰는 표현이고요.",
-    time: 60,
-    bookmark: false,
-  },
-];
 
 const cardVariants = {
   invisible: {
@@ -75,6 +50,11 @@ const cardVariants = {
 };
 
 export default function Quiz() {
+  const { quizId } = useParams();
+  const { data: quizs, isLoading } = useQuery<IQuiz[]>(
+    ["quizzes", quizId],
+    getQuiz
+  );
   const setShowNavBar = useSetRecoilState(showNavBarState);
   const [submit, setSubmit] = useState(false);
   const [time, setTime] = useState(20);
@@ -100,10 +80,14 @@ export default function Quiz() {
     }
   }, [time]);
   const nextPlease = (quizTime: number) => {
-    setVisible((prev) => (prev === quizs.length - 1 ? quizs.length : prev + 1));
-    setSubmit(() => false);
-    if (visible < quizs.length) {
-      setTime(() => quizs[visible + 1].time);
+    if (quizs) {
+      setVisible((prev) =>
+        prev === quizs.length - 1 ? quizs.length : prev + 1
+      );
+      setSubmit(() => false);
+      if (visible < quizs?.length) {
+        setTime(() => quizs[visible + 1]?.time);
+      }
     }
   };
   useEffect(() => setShowNavBar(() => false));
@@ -116,10 +100,10 @@ export default function Quiz() {
         position={"relative"}
       >
         <AnimatePresence>
-          {quizs.map((quiz: IQuiz, index: number) =>
+          {quizs?.map((quiz, index) =>
             index === visible ? (
               <motion.div
-                key={index}
+                key={quiz.id}
                 style={{
                   height: "100%",
                   width: "100%",
@@ -138,11 +122,11 @@ export default function Quiz() {
                         <FaRegClock />
                         <Text>{time}</Text>
                       </HStack>
-                      {quiz.bookmark ? (
+                      {/* {quiz.bookmark ? (
                         <FaHeart fontSize={"20"} />
                       ) : (
                         <FaRegHeart fontSize={"20"} />
-                      )}
+                      )} */}
                     </HStack>
                     <Stack divider={<StackDivider />}>
                       <Box>
