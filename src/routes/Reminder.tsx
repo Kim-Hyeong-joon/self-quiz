@@ -13,9 +13,21 @@ import {
   Checkbox,
   Container,
   SimpleGrid,
+  Spinner,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { getReminders } from "../api";
+
+interface IReminder {
+  id: number;
+  title: string;
+}
 
 export default function Reminder() {
+  const { data, isLoading } = useQuery<IReminder[]>(
+    ["reminders"],
+    getReminders
+  );
   return (
     <>
       <Container maxW="container.md">
@@ -23,22 +35,26 @@ export default function Reminder() {
           <Text fontSize={"2xl"}>리마인더</Text>
         </HStack>
         <SimpleGrid w="100%" gap="5" templateColumns={"1fr"}>
-          <Card h="100%" justifyItems={"center"}>
-            <CardBody>
-              <HStack h="100%" alignItems={"center"} justifyContent={"center"}>
-                <Heading size="xs">겨울왕국2 day.1 풀기</Heading>
-                <Checkbox colorScheme="green"></Checkbox>
-              </HStack>
-            </CardBody>
-          </Card>
-          <Card h="100%" justifyItems={"center"}>
-            <CardBody>
-              <HStack alignItems={"center"} justifyContent={"center"}>
-                <Heading size="xs">겨울왕국2 day.2 풀기</Heading>
-                <Checkbox colorScheme="green"></Checkbox>
-              </HStack>
-            </CardBody>
-          </Card>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              {data?.map((reminder) => (
+                <Card key={reminder.id} h="100%" justifyItems={"center"}>
+                  <CardBody>
+                    <HStack
+                      h="100%"
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <Heading size="xs">{reminder.title}</Heading>
+                      <Checkbox colorScheme="green"></Checkbox>
+                    </HStack>
+                  </CardBody>
+                </Card>
+              ))}
+            </>
+          )}
         </SimpleGrid>
       </Container>
     </>

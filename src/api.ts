@@ -6,4 +6,7 @@ const instance = axios.create({
 });
 
 export const getQuizs = () =>
-  instance.get("quizs/").then((response) => response.data);
+  instance.get("quizzes/").then((response) => response.data);
+
+export const getReminders = () =>
+  instance.get("quizzes/reminders").then((response) => response.data);
