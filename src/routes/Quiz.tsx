@@ -19,6 +19,7 @@ import { FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 import { showNavBarState } from "../components/Root";
+import { Link } from "react-router-dom";
 
 interface IQuiz {
   question: string;
@@ -169,6 +170,12 @@ export default function Quiz() {
                           <Box mt="5">
                             <Text textAlign={"center"}>해설</Text>
                             <Text>{quiz.commentary}</Text>
+                          </Box>
+                          <Box mt="5">
+                            <Text textAlign={"center"}>해설링크</Text>
+                            {/* <Link to="https://www.youtube.com/shorts/v6cn_cnE8L4">
+                              https://www.youtube.com/shorts/v6cn_cnE8L4
+                            </Link> */}
                           </Box>
                           <HStack w="100%" my="5">
                             <Button

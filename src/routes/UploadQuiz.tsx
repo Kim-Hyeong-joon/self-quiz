@@ -4,6 +4,11 @@ import {
   FormControl,
   FormLabel,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   Textarea,
   VStack,
@@ -17,6 +22,8 @@ interface IForm {
   question: string;
   answer: string;
   commentary: string;
+  time: number;
+  commentary_link: string;
 }
 
 export default function UploadQuiz() {
@@ -32,9 +39,10 @@ export default function UploadQuiz() {
   const onSubmit = (data: IForm) => {
     console.log("submit");
   };
+  console.log(watch());
   return (
-    <Container>
-      <VStack as="form" onSubmit={handleSubmit(onSubmit)}>
+    <Container maxW="container.md">
+      <VStack as="form" onSubmit={handleSubmit(onSubmit)} mb="50px">
         <FormControl>
           종류 선택
           <Select
@@ -81,6 +89,34 @@ export default function UploadQuiz() {
             })}
             placeholder="해설을 작성해주세요."
           />
+        </FormControl>
+        <FormControl>
+          <FormLabel>해설 링크</FormLabel>
+          <Input
+            disabled={quizDisabled}
+            {...register("commentary_link", {
+              required: !quizDisabled ? true : false,
+            })}
+            placeholder="유튜브 등 해설링크를 작성해보세요!"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>퀴즈 시간</FormLabel>
+          <NumberInput min={0} defaultValue={0}>
+            <NumberInputField
+              disabled={quizDisabled}
+              {...register("time", {
+                required: !quizDisabled ? true : false,
+              })}
+              placeholder="몇 초 동안 퀴즈를 푸실 건가요?"
+            />
+            {!quizDisabled ? (
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            ) : null}
+          </NumberInput>
         </FormControl>
         <Button type="submit" colorScheme="green" w="100%">
           퀴즈 만들기!

@@ -22,14 +22,7 @@ export default function Reminder() {
         <HStack mx="5" mb="5" justifyContent={"space-between"}>
           <Text fontSize={"2xl"}>리마인더</Text>
         </HStack>
-        <SimpleGrid
-          w="100%"
-          gap="5"
-          templateColumns={{
-            base: "1fr",
-            md: "repeat(3, 1fr)",
-          }}
-        >
+        <SimpleGrid w="100%" gap="5" templateColumns={"1fr"}>
           <Card h="100%" justifyItems={"center"}>
             <CardBody>
               <HStack h="100%" alignItems={"center"} justifyContent={"center"}>
