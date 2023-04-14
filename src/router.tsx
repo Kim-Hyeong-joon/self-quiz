@@ -5,6 +5,8 @@ import NotFound from "./routes/NotFound";
 import Reminder from "./routes/Reminder";
 import Quiz from "./routes/Quiz";
 import UploadQuiz from "./routes/UploadQuiz";
+import MyQuizzes from "./routes/MyQuizzes";
+import EditReminder from "./routes/EditReminder";
 
 const router = createBrowserRouter([
   {
@@ -17,16 +19,24 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "quizs/reminder",
+        path: "quizzes/reminders",
         element: <Reminder />,
       },
       {
-        path: "quizs/:quizId/quiz",
+        path: "quizzes/:quizId/quiz",
         element: <Quiz />,
       },
       {
-        path: "quizs/upload",
+        path: "quizzes/upload",
         element: <UploadQuiz />,
+      },
+      {
+        path: "quizzes/my-quizzes",
+        element: <MyQuizzes />,
+      },
+      {
+        path: "quizzes/reminders/:reminderPk/edit",
+        element: <EditReminder />,
       },
     ],
   },

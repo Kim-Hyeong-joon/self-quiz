@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Header from "./Header";
 import NavBar from "./NavBar";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ export default function Root() {
       {showNavBar && <Header />}
       <Outlet />
       {showNavBar && <NavBar />}
+      <ReactQueryDevtools />
     </>
   );
 }

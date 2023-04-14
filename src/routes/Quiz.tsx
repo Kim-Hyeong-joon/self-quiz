@@ -57,7 +57,7 @@ export default function Quiz() {
   );
   const setShowNavBar = useSetRecoilState(showNavBarState);
   const [submit, setSubmit] = useState(false);
-  const [time, setTime] = useState(20);
+  const [time, setTime] = useState(100);
   const [timeInterval, setTimeInterval] = useState<NodeJS.Timeout>();
   const [visible, setVisible] = useState(0);
   const onClick = () => {
@@ -90,6 +90,7 @@ export default function Quiz() {
       }
     }
   };
+  useEffect(() => setTime(() => (quizs ? quizs[0].time : 100)), [quizs]);
   useEffect(() => setShowNavBar(() => false));
   return (
     <Container mt="5">
@@ -103,7 +104,7 @@ export default function Quiz() {
           {quizs?.map((quiz, index) =>
             index === visible ? (
               <motion.div
-                key={quiz.id}
+                key={index}
                 style={{
                   height: "100%",
                   width: "100%",

@@ -12,6 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { getQuizs } from "../api";
+import { FaRegEdit } from "react-icons/fa";
 
 interface IQuiz {
   id: number;
@@ -19,13 +20,10 @@ interface IQuiz {
   basic_quizzes_count: string;
 }
 
-export default function Home() {
+export default function QuizSets() {
   const { data, isLoading } = useQuery<IQuiz[]>(["quizs"], getQuizs);
   return (
     <Container maxW="container.md">
-      <HStack mb="5" mx="5" justifyContent={"space-between"}>
-        <Text fontSize={"2xl"}>오늘의 퀴즈!</Text>
-      </HStack>
       <SimpleGrid w="100%" gap="5" templateColumns={"1fr"}>
         {isLoading ? (
           <Spinner />
@@ -33,7 +31,7 @@ export default function Home() {
           <>
             {data?.map((quiz, index) => (
               <Card key={index} h="100%" justifyItems={"center"}>
-                <Link to={`/quizzes/${quiz.id}/quiz`}>
+                <Link to={`/quizs/${quiz.id}/quiz`}>
                   <CardBody>
                     <HStack
                       alignItems={"center"}
@@ -49,7 +47,7 @@ export default function Home() {
                           문제 수:{quiz.basic_quizzes_count}
                         </Text>
                       </Box>
-                      <Text>&rarr;</Text>
+                      <FaRegEdit />
                     </HStack>
                   </CardBody>
                 </Link>
