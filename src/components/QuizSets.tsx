@@ -11,17 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { getQuizs } from "../api";
-import { FaRegEdit } from "react-icons/fa";
-
-interface IQuiz {
-  id: number;
-  title: string;
-  basic_quizzes_count: string;
-}
+import { getQuizSets } from "../api";
+import { FaAngleRight } from "react-icons/fa";
+import { IQuizSet } from "../types";
 
 export default function QuizSets() {
-  const { data, isLoading } = useQuery<IQuiz[]>(["quizs"], getQuizs);
+  const { data, isLoading } = useQuery<IQuizSet[]>(["quizs"], getQuizSets);
+
   return (
     <Container maxW="container.md">
       <SimpleGrid w="100%" gap="5" templateColumns={"1fr"}>
@@ -31,7 +27,7 @@ export default function QuizSets() {
           <>
             {data?.map((quiz, index) => (
               <Card key={index} h="100%" justifyItems={"center"}>
-                <Link to={`/quizs/${quiz.id}/quiz`}>
+                <Link to={`/quizzes/quizsets/${quiz.id}/edit`}>
                   <CardBody>
                     <HStack
                       alignItems={"center"}
@@ -47,7 +43,7 @@ export default function QuizSets() {
                           문제 수:{quiz.basic_quizzes_count}
                         </Text>
                       </Box>
-                      <FaRegEdit />
+                      <FaAngleRight />
                     </HStack>
                   </CardBody>
                 </Link>

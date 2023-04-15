@@ -50,7 +50,6 @@ export default function EditReminder() {
   const onSubmit = (data: IForm) => {
     if (reminderPk) {
       const reminderData: IEditReminderVariables = { ...data, reminderPk };
-      console.log(reminderData);
       mutation.mutate(reminderData);
     }
   };

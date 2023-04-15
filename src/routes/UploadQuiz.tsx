@@ -13,8 +13,11 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { IUploadQuizVariables, uploadQuiz } from "../api";
 
 interface IForm {
   title: string;
@@ -26,17 +29,18 @@ interface IForm {
 }
 
 export default function UploadQuiz() {
-  const [quizDisabled, setQuizDisabled] = useState(false);
-  const { register, watch, handleSubmit } = useForm<IForm>();
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.value === "reminder") {
-      setQuizDisabled(() => true);
-    } else {
-      setQuizDisabled(() => false);
-    }
-  };
+  const { quizSetPk } = useParams();
+  const { register, handleSubmit } = useForm<IForm>();
+  const mutation = useMutation(uploadQuiz, {
+    onSuccess: () => {
+      console.log("success");
+    },
+  });
   const onSubmit = (data: IForm) => {
-    console.log(data);
+    if (quizSetPk) {
+      const quizData: IUploadQuizVariables = { ...data, quizSetPk };
+      mutation.mutate(quizData);
+    }
   };
 
   return (
@@ -45,9 +49,8 @@ export default function UploadQuiz() {
         <FormControl>
           <FormLabel>문제</FormLabel>
           <Input
-            disabled={quizDisabled}
             {...register("question", {
-              required: !quizDisabled ? true : false,
+              required: true,
             })}
             placeholder="문제를 작성해주세요."
           />
@@ -55,17 +58,15 @@ export default function UploadQuiz() {
         <FormControl>
           <FormLabel>정답</FormLabel>
           <Input
-            disabled={quizDisabled}
-            {...register("answer", { required: !quizDisabled ? true : false })}
+            {...register("answer", { required: true })}
             placeholder="정답을 작성해주세요."
           />
         </FormControl>
         <FormControl>
           <FormLabel>해설</FormLabel>
           <Textarea
-            disabled={quizDisabled}
             {...register("commentary", {
-              required: !quizDisabled ? true : false,
+              required: true,
             })}
             placeholder="해설을 작성해주세요."
           />
@@ -73,7 +74,6 @@ export default function UploadQuiz() {
         <FormControl>
           <FormLabel>해설 링크</FormLabel>
           <Input
-            disabled={quizDisabled}
             {...register("commentary_link")}
             placeholder="유튜브 등 해설링크를 작성해보세요!"
           />
@@ -82,18 +82,16 @@ export default function UploadQuiz() {
           <FormLabel>퀴즈 시간</FormLabel>
           <NumberInput min={0} defaultValue={0}>
             <NumberInputField
-              disabled={quizDisabled}
               placeholder="몇 초 동안 퀴즈를 푸실 건가요?"
               {...register("time", {
                 required: true,
               })}
             />
-            {!quizDisabled ? (
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            ) : null}
+
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
           </NumberInput>
         </FormControl>
         <Button type="submit" colorScheme="green" w="100%">

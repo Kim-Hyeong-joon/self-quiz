@@ -11,16 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { getQuizs } from "../api";
-
-interface IQuiz {
-  id: number;
-  title: string;
-  basic_quizzes_count: string;
-}
+import { getQuizSets } from "../api";
+import { IQuizSet } from "../types";
 
 export default function Home() {
-  const { data, isLoading } = useQuery<IQuiz[]>(["quizs"], getQuizs);
+  const { data, isLoading } = useQuery<IQuizSet[]>(["quizs"], getQuizSets);
   return (
     <Container maxW="container.md">
       <HStack mb="5" mx="5" justifyContent={"space-between"}>

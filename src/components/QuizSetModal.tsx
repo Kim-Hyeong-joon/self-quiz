@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { createQuizSet, createReminder } from "../api";
+import { IUploadQuizSetSuccess, createQuizSet, createReminder } from "../api";
 import { useNavigate } from "react-router-dom";
 
 interface QuizSetModalProps {
@@ -32,13 +32,13 @@ export default function QuizSetModal({ isOpen, onClose }: QuizSetModalProps) {
   const navigate = useNavigate();
   const toast = useToast();
   const mutation = useMutation(createQuizSet, {
-    onSuccess: () => {
+    onSuccess: (data: IUploadQuizSetSuccess) => {
       toast({
         status: "success",
         position: "top",
         title: "퀴즈셋 생성 완료!",
       });
-      navigate("/");
+      navigate(`/quizzes/quizsets/${data.id}/edit`);
       onClose();
       reset();
     },

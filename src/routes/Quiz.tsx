@@ -21,15 +21,8 @@ import { useSetRecoilState } from "recoil";
 import { showNavBarState } from "../components/Root";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getQuiz } from "../api";
-
-interface IQuiz {
-  id: number;
-  question: string;
-  answer: string;
-  commentary: string;
-  time: number;
-}
+import { getBasicQuizzes } from "../api";
+import { IBasicQuiz } from "../types";
 
 const cardVariants = {
   invisible: {
@@ -50,10 +43,10 @@ const cardVariants = {
 };
 
 export default function Quiz() {
-  const { quizId } = useParams();
-  const { data: quizs, isLoading } = useQuery<IQuiz[]>(
-    ["quizzes", quizId],
-    getQuiz
+  const { quizSetPk } = useParams();
+  const { data: basicQuizzes, isLoading } = useQuery<IBasicQuiz[]>(
+    ["basic-quizzes", quizSetPk],
+    getBasicQuizzes
   );
   const setShowNavBar = useSetRecoilState(showNavBarState);
   const [submit, setSubmit] = useState(false);
@@ -80,17 +73,20 @@ export default function Quiz() {
     }
   }, [time]);
   const nextPlease = (quizTime: number) => {
-    if (quizs) {
+    if (basicQuizzes) {
       setVisible((prev) =>
-        prev === quizs.length - 1 ? quizs.length : prev + 1
+        prev === basicQuizzes.length - 1 ? basicQuizzes.length : prev + 1
       );
       setSubmit(() => false);
-      if (visible < quizs?.length) {
-        setTime(() => quizs[visible + 1]?.time);
+      if (visible < basicQuizzes?.length) {
+        setTime(() => basicQuizzes[visible + 1]?.time);
       }
     }
   };
-  useEffect(() => setTime(() => (quizs ? quizs[0].time : 100)), [quizs]);
+  useEffect(
+    () => setTime(() => (basicQuizzes ? basicQuizzes[0].time : 100)),
+    [basicQuizzes]
+  );
   useEffect(() => setShowNavBar(() => false));
   return (
     <Container mt="5">
@@ -101,7 +97,7 @@ export default function Quiz() {
         position={"relative"}
       >
         <AnimatePresence>
-          {quizs?.map((quiz, index) =>
+          {basicQuizzes?.map((quiz, index) =>
             index === visible ? (
               <motion.div
                 key={index}
