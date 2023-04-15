@@ -3,6 +3,7 @@ export interface IBasicQuiz {
   question: string;
   answer: string;
   commentary: string;
+  commentary_link: string;
   time: number;
 }
 

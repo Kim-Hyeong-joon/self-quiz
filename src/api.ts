@@ -111,3 +111,38 @@ export const uploadQuiz = (data: IUploadQuizVariables) =>
       },
     })
     .then((response) => response.data);
+
+export const getBasicQuiz = ({ queryKey }: QueryFunctionContext) => {
+  const [first, quizPk] = queryKey;
+  return instance
+    .get(`quizzes/basic-quiz/${quizPk}`)
+    .then((response) => response.data);
+};
+
+export interface IEditQuizVariables {
+  title: string;
+  question: string;
+  answer: string;
+  commentary: string;
+  time: number;
+  commentary_link: string;
+  quizPk: string | undefined;
+}
+
+export const editBasicQuiz = (data: IEditQuizVariables) =>
+  instance
+    .put(`quizzes/basic-quiz/${data.quizPk}`, data, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
+
+export const deleteBasicQuiz = (quizPk: string | undefined) =>
+  instance
+    .delete(`/quizzes/basic-quiz/${quizPk}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);

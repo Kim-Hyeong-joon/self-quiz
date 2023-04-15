@@ -8,6 +8,7 @@ import UploadQuiz from "./routes/UploadQuiz";
 import MyQuizzes from "./routes/MyQuizzes";
 import EditReminder from "./routes/EditReminder";
 import EditQuizSet from "./routes/EditQuizSet";
+import EditQuiz from "./routes/EditQuiz";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "quizzes/quizsets/:quizSetPk/quiz-upload",
         element: <UploadQuiz />,
+      },
+      {
+        path: "quizzes/quizsets/:quizSetPk/quiz/:quizPk/edit",
+        element: <EditQuiz />,
       },
     ],
   },

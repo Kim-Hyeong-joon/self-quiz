@@ -20,7 +20,7 @@ import { Link, useParams } from "react-router-dom";
 import { getBasicQuizzes, getQuizSet } from "../api";
 import { IBasicQuiz, IQuizSet } from "../types";
 import EditQuizSetTitle from "../components/EditQuizSetTitle";
-import { FaPencilAlt, FaPlus } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaRegEdit } from "react-icons/fa";
 
 export default function EditQuizSet() {
   const { quizSetPk } = useParams();
@@ -45,11 +45,19 @@ export default function EditQuizSet() {
         <>
           <Heading>퀴즈 목록</Heading>
           {data?.map((basicQuiz, index) => (
-            <Card key={index} mt="3">
-              <CardBody>
-                <Text noOfLines={1}>문제: {basicQuiz.question}</Text>
-              </CardBody>
-            </Card>
+            <Link
+              key={index}
+              to={`/quizzes/quizsets/${quizSetPk}/quiz/${basicQuiz.id}/edit`}
+            >
+              <Card mt="3">
+                <CardBody>
+                  <HStack justifyContent={"space-between"}>
+                    <Text noOfLines={1}>문제: {basicQuiz.question}</Text>
+                    <FaRegEdit size="20px" />
+                  </HStack>
+                </CardBody>
+              </Card>
+            </Link>
           ))}
           <Box display={"flex"} justifyContent={"center"}>
             <Link to={`/quizzes/quizsets/${quizSetPk}/quiz-upload`}>

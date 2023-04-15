@@ -12,11 +12,12 @@ import {
   Select,
   Textarea,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IUploadQuizVariables, uploadQuiz } from "../api";
 
 interface IForm {
@@ -31,9 +32,24 @@ interface IForm {
 export default function UploadQuiz() {
   const { quizSetPk } = useParams();
   const { register, handleSubmit } = useForm<IForm>();
+  const navigate = useNavigate();
+  const toast = useToast();
   const mutation = useMutation(uploadQuiz, {
     onSuccess: () => {
-      console.log("success");
+      toast({
+        status: "success",
+        position: "top",
+        title: "퀴즈 생성완료",
+      });
+      navigate(`/quizzes/quizsets/${quizSetPk}/edit`);
+    },
+    onError: () => {
+      toast({
+        status: "error",
+        position: "top",
+        title: "오류가 발생했습니다",
+        description: "다시 시도해주세요",
+      });
     },
   });
   const onSubmit = (data: IForm) => {
