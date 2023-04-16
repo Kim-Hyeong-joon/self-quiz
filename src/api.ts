@@ -146,3 +146,12 @@ export const deleteBasicQuiz = (quizPk: string | undefined) =>
       },
     })
     .then((response) => response.data);
+
+export const deleteQuizSet = (quizSetPk: string | undefined) =>
+  instance
+    .delete(`/quizzes/quizsets/${quizSetPk}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);

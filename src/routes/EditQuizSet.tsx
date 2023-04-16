@@ -21,6 +21,7 @@ import { getBasicQuizzes, getQuizSet } from "../api";
 import { IBasicQuiz, IQuizSet } from "../types";
 import EditQuizSetTitle from "../components/EditQuizSetTitle";
 import { FaPencilAlt, FaPlus, FaRegEdit } from "react-icons/fa";
+import DeleteQuizSetAlert from "../components/DeleteQuizSetAlert";
 
 export default function EditQuizSet() {
   const { quizSetPk } = useParams();
@@ -68,6 +69,8 @@ export default function EditQuizSet() {
           </Box>
         </>
       )}
+      <Divider my="20" />
+      <DeleteQuizSetAlert title={quizSetData?.title} quizSetPk={quizSetPk} />
     </Container>
   );
 }

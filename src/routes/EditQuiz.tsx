@@ -136,7 +136,11 @@ export default function EditQuiz() {
           <Divider />
         </VStack>
       )}
-      <DeleteQuizAlert quizPk={quizPk} quizSetPk={quizSetPk} />
+      <DeleteQuizAlert
+        question={data?.question}
+        quizPk={quizPk}
+        quizSetPk={quizSetPk}
+      />
     </Container>
   );
 }
