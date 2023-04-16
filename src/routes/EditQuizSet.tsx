@@ -69,7 +69,7 @@ export default function EditQuizSet() {
           </Box>
         </>
       )}
-      <Divider my="20" />
+      <Divider my="10" />
       <DeleteQuizSetAlert title={quizSetData?.title} quizSetPk={quizSetPk} />
     </Container>
   );

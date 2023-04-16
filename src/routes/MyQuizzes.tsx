@@ -10,7 +10,6 @@ import {
 import QuizSets from "../components/QuizSets";
 import Reminders from "../components/Reminders";
 import { atom, useRecoilState } from "recoil";
-import { useState } from "react";
 
 export const tapIndexState = atom({
   key: "tapIndexState",

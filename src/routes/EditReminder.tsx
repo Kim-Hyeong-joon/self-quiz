@@ -1,6 +1,7 @@
 import {
   Button,
   Container,
+  Divider,
   FormControl,
   FormLabel,
   Input,
@@ -13,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { IEditReminderVariables, editReminder, getReminder } from "../api";
 import { useForm } from "react-hook-form";
+import DeleteReminderAlert from "../components/DeleteReminderAlert";
 
 interface IReminder {
   id: number;
@@ -67,11 +69,13 @@ export default function EditReminder() {
               placeholder="제목을 입력해주세요."
             />
           </FormControl>
-          <Button colorScheme="red" type="submit" w="100%">
+          <Button type="submit" w="100%">
             수정하기
           </Button>
         </VStack>
       )}
+      <Divider my="5" />
+      <DeleteReminderAlert reminderPk={reminderPk} title={data?.title} />
     </Container>
   );
 }

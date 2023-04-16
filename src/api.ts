@@ -155,3 +155,12 @@ export const deleteQuizSet = (quizSetPk: string | undefined) =>
       },
     })
     .then((response) => response.data);
+
+export const deleteReminder = (reminderPk: string | undefined) =>
+  instance
+    .delete(`/quizzes/reminders/${reminderPk}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);

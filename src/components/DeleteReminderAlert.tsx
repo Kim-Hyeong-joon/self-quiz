@@ -13,32 +13,27 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
-import { deleteBasicQuiz } from "../api";
+import { deleteBasicQuiz, deleteQuizSet, deleteReminder } from "../api";
 import { useNavigate } from "react-router-dom";
 
 interface IProp {
-  quizPk: string | undefined;
-  quizSetPk: string | undefined;
-  question: string | undefined;
+  reminderPk: string | undefined;
+  title: string | undefined;
 }
 
-export default function DeleteQuizAlert({
-  question,
-  quizPk,
-  quizSetPk,
-}: IProp) {
+export default function DeleteReminderAlert({ title, reminderPk }: IProp) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const toast = useToast();
   const navigate = useNavigate();
-  const mutation = useMutation(deleteBasicQuiz, {
+  const mutation = useMutation(deleteReminder, {
     onSuccess: () => {
       toast({
         status: "success",
         position: "top",
         title: "삭제가 완료되었습니다.",
       });
-      navigate(`/quizzes/quizsets/${quizSetPk}/edit`);
+      navigate(`/quizzes/my-quizzes`);
     },
     onError: () => {
       toast({
@@ -50,12 +45,12 @@ export default function DeleteQuizAlert({
   });
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutation.mutate(quizPk);
+    mutation.mutate(reminderPk);
   };
   return (
     <>
       <Button w="100%" colorScheme="red" onClick={onOpen}>
-        퀴즈 삭제
+        퀴즈셋 삭제
       </Button>
       <AlertDialog
         isOpen={isOpen}
@@ -65,9 +60,9 @@ export default function DeleteQuizAlert({
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              <Text>{question}</Text>
-              <Divider my="5" />
-              퀴즈를 삭제 하시겠습니까?
+              <Text>{title}</Text>
+              <Divider my="3" />
+              리마인더를 삭제 하시겠습니까?
             </AlertDialogHeader>
             <AlertDialogBody>삭제하시면 복구가 불가능합니다.</AlertDialogBody>
             <AlertDialogFooter as="form" onSubmit={onSubmit}>
